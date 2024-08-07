@@ -1,0 +1,5 @@
+# ignore ALL .log files
+*.log
+*.env
+settings.py
+myenv/

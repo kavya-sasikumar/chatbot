@@ -22,12 +22,13 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     color = models.CharField(max_length=255)
-    price = models.DecimalField(decimal_places=2)
+    price = models.DecimalField(decimal_places=2, max_digits=20)
     image = models.ImageField(default='default.jpg', upload_to='product_pics')
     stock = models.PositiveIntegerField()
     is_available = models.BooleanField(default=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+    category = models.ForeignKey(Categories, on_delete=models.CASCADE)
 
     #For the admin view
     def __str__(self):
@@ -37,7 +38,7 @@ class Order(models.Model):
     """ Order Class to keep details of a Product Order """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     address = models.TextField()
-    total_amount = models.DecimalField(decimal_places=2)
+    total_amount = models.DecimalField(decimal_places=2, max_digits=20)
     StatusType = models.TextChoices('StatusType', 'PENDING SHIPPED DELIVERED CANCELLED')
     status_type = models.CharField(choices=StatusType.choices, max_length=9, default='PENDING')
     order_date = models.DateTimeField(auto_now_add=True)
@@ -51,16 +52,16 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=20, decimal_places=2)
 
     def __str__(self):
         return f'{self.quantity} x {self.product.name}'
 
 class Review(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='items')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     rating = models.PositiveIntegerField()
-    comment = models.TextField()
+    comment = models.TextField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
@@ -68,7 +69,7 @@ class Review(models.Model):
         return f'Review by {self.user.username} for {self.product.title}'
 
 class ChatMessage(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='items')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
