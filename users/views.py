@@ -114,4 +114,4 @@ class ChatSessionRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     queryset = ChatSession.objects.all()
     serializer_class = ChatSessionSerializer
     permission_classes = (permissions.AllowAny, )
- )
+ 
