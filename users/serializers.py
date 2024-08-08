@@ -68,43 +68,39 @@ class CategoriesSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'date_created', 'date_updated')
 
 class ProductSerializer(serializers.ModelSerializer):
-   """A serializer for the product model in our DB to convert the format to JSON """
-
-   class Meta:
-       model = Product
-       fields = ('title', 'description', 'color', 'price', 'image', 'stock', 'is_available', 'date_created', 'date_updated', 'category')
-
-class OrderSerializer(serializers.ModelSerializer):
-      """A serializer for the order model in our DB to convert the format to JSON """
-
-      class Meta:
-        model = Order
-        fields = ('user', 'address', 'total_amount', 'status_type', 'order_date', 'date_updated')
-        
-class OrderItemSerializer(serializers.ModelSerializer):
-     """A serializer for the order item model in our DB to convert the format to JSON """
-
-     class Meta:
-         model = OrderItem
-         fields = ('order','product','quantity','price')
-
-class ReviewSerializer(serializers.ModelSerializer):
-    """A serializer for the review model in our DB to convert the format to JSON """
+    """A serializer for the product model in our DB to convert the format to JSON """
 
     class Meta:
-        model = Review
-        fields = ('user','product','rating','comment','date_created','date_updated')
+        model = Product
+        fields = ('id', 'title', 'description', 'color', 'price', 'image', 'stock', 'is_available', 'date_created', 'date_updated', 'category')
 
-class ChatMessage(serializers.ModelSerializer):
-     """A serializer for the chat message model in our DB to convert the format to JSON """
+class OrderSerializer(serializers.ModelSerializer): 
+    """A serializer for the order model in our DB to convert the format to JSON """
 
-     class Meta:
-         model = ChatMessage
-         fields = ('user','message','timestamp')
+    class Meta: 
+        model = Order 
+        fields = ('user', 'address', 'total_amount', 'status_type', 'order_date', 'date_update')
 
-class ChatSession(serializers.ModelSerializer):
-     """A serializer for the chat session model in our DB to convert the format to JSON """
+class OrderItemSerializer(serializers.ModelSerializer):
+     """A serializer for the order item model in our DB to convert the format to JSON """
+     class Meta: 
+         model = OrderItem 
+         fields = ('order', 'product', 'quantitiy', 'price')
 
-     class Meta:
-         model = ChatSession
-         fields = ('user','start_time','end_time')
+class ReviewSerializer(serializers.ModelSerializer):
+     """A serializer for the review item model in our DB to convert the format to JSON """
+     class Meta: 
+         model=Review
+         field=('user', 'product', 'rating', 'comment', 'date_created', 'date_updated')
+
+class ChatMessageSerializer(serializers.ModelSerializer):
+     """A serializer for the chat message item model in our DB to convert the format to JSON """
+     class Meta: 
+         model=ChatMessage
+         field=('user', 'message', 'timestamp')
+
+class ChatSessionSerializer(serializers.ModelSerializer):
+     """A serializer for the chat session item model in our DB to convert the format to JSON """
+     class Meta: 
+         model=ChatSession
+         field=('user', 'start_time', 'end_time')

@@ -7,4 +7,4 @@ venv/
 media/
 product_pics/
 migrations/
-chatbot/settings.py
+users/migrations/
