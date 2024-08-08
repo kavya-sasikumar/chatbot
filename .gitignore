@@ -1,8 +1,9 @@
 # ignore ALL .log files
 *.log
 *.env
-settings.py
+chatbot/settings.py
 myenv/
 venv/
 media/
 product_pics/
+users/migrations/
