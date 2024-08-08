@@ -5,3 +5,4 @@ settings.py
 myenv/
 venv/
 media/
+product_pics/
