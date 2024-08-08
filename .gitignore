@@ -1,0 +1,10 @@
+# ignore ALL .log files
+*.log
+*.env
+settings.py
+myenv/
+venv/
+media/
+product_pics/
+migrations/
+chatbot/settings.py
