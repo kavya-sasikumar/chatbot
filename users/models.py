@@ -28,7 +28,6 @@ class Product(models.Model):
     is_available = models.BooleanField(default=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    category = models.ForeignKey(Categories, on_delete=models.CASCADE)
 
     #For the admin view
     def __str__(self):
