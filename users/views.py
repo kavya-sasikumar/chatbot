@@ -1,6 +1,117 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import generics, status, permissions, filters
+from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
-# Create your views here.
+# from chatbot.pagination import CustomPagination
+from django.contrib.auth.models import User
+from .models import *
+from .serializers import *
+
+class CategoryCreateView(generics.CreateAPIView):
+    queryset = Categories.objects.all()
+    serializer_class = CategoriesSerializer
+    permission_classes = (permissions.AllowAny, )
+
+class CategoryListView(generics.ListAPIView):
+    queryset = Categories.objects.all().order_by('id')
+    serializer_class = CategoriesSerializer
+    permission_classes = (permissions.AllowAny, )
+
+class CategoryRetrieveUpdateView(generics.RetrieveUpdateAPIView):
+    queryset = Categories.objects.all()
+    serializer_class = CategoriesSerializer
+    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser, )
+
+class ProductCreateView(generics.CreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser, )
+
+class ProductListView(generics.ListAPIView):
+    queryset = Product.objects.all().order_by('id')
+    serializer_class = ProductSerializer
+    permission_classes = (permissions.AllowAny, )
+
+class ProductRetrieveUpdateView(generics.RetrieveUpdateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser, )
+
+class OrderCreateView(generics.CreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = (permissions.isAuthenticated, )
+
+class OrderListView(generics.ListAPIView):
+    serializer_class = OrderSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        return Order.objects.filter(user_id=self.kwargs['user_id']).order_by('-id')
+
+class OrderRetrieveUpdateView(generics.RetrieveUpdateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+class OrderItemCreateView(generics.CreateAPIView):
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+class OrderItemRetrieveUpdateView(generics.RetrieveUpdateAPIView):
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+class ReviewCreateView(generics.CreateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+class ReviewListView(generics.ListAPIView):
+    queryset = Review.objects.all().order_by('id')
+    serializer_class = ReviewSerializer
+    permission_classes = (permissions.AllowAny, )
+
+class ReviewRetrieveUpdateView(generics.RetrieveUpdateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+class ChatMessageCreateView(generics.CreateAPIView):
+    queryset = ChatMessage.objects.all()
+    serializer_class = ChatMessageSerializer
+    permission_classes = (permissions.AllowAny, )
+
+class ChatMessageListView(generics.ListAPIView):
+    # queryset = ChatMessage.objects.all().order_by('id')
+    serializer_class = ChatMessageSerializer
+    permission_classes = (permissions.AllowAny, )
+
+    def get_queryset(self):
+        return ChatMessage.objects.filter(user_id=self.kwargs['user_id']).order_by('-id')
+
+class ChatMessageRetrieveUpdateView(generics.RetrieveUpdateAPIView):
+    queryset = ChatMessage.objects.all()
+    serializer_class = ChatMessageSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+class ChatSessionCreateView(generics.CreateAPIView):
+    queryset = ChatSession.objects.all()
+    serializer_class = ChatSessionSerializer
+    permission_classes = (permissions.AllowAny, )
+
+class ChatSessionListView(generics.ListAPIView):
+    queryset = ChatSession.objects.all().order_by('id')
+    serializer_class = ChatSessionSerializer
+    permission_classes = (permissions.AllowAny, )
+
+class ChatSessionRetrieveUpdateView(generics.RetrieveUpdateAPIView):
+    queryset = ChatSession.objects.all()
+    serializer_class = ChatSessionSerializer
+    permission_classes = (permissions.AllowAny, )
+ )
