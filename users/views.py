@@ -4,12 +4,27 @@ from rest_framework.response import Response
 from rest_framework import generics, status, permissions, filters
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
+from rest_framework.decorators import api_view, permission_classes
 
 # from chatbot.pagination import CustomPagination
 from django.contrib.auth.models import User
 from .models import *
 from .serializers import *
 
+"""View to create a user"""
+@api_view(['POST',])
+@permission_classes((permissions.AllowAny,))
+def user_create(request):
+    if request.method == 'POST':
+        serializer = UserCreateSerializer(data=request.data)
+        data = {}
+        if serializer.is_valid():
+            user = serializer.save()
+            data['response'] = "Successfully Registered New User"
+        else:
+            data = serializer.errors
+        return Response(data)
+    
 class CategoryCreateView(generics.CreateAPIView):
     queryset = Categories.objects.all()
     serializer_class = CategoriesSerializer

@@ -3,6 +3,9 @@ from .views import *
 
 urlpatterns = [
 
+    #Users
+    path('create-user/', user_create),
+    
     # Categories
     path('create-categories/', CategoryCreateView.as_view()),
     path('category/<int:pk>/', CategoryRetrieveUpdateView.as_view()),
