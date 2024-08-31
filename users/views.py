@@ -5,6 +5,7 @@ from rest_framework import generics, status, permissions, filters
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from rest_framework.decorators import api_view, permission_classes
+from chatbot.pagination import CustomPagination
 
 # from chatbot.pagination import CustomPagination
 from django.contrib.auth.models import User
@@ -49,6 +50,7 @@ class ProductListView(generics.ListAPIView):
     queryset = Product.objects.all().order_by('id')
     serializer_class = ProductSerializer
     permission_classes = (permissions.AllowAny, )
+    pagination_class = CustomPagination
 
 class ProductRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     queryset = Product.objects.all()
