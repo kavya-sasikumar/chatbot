@@ -47,7 +47,7 @@ class ProductCreateView(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser, )
 
 class ProductListView(generics.ListAPIView):
-    queryset = Product.objects.all().order_by('id')
+    queryset = Product.objects.all().order_by('-id')
     serializer_class = ProductSerializer
     permission_classes = (permissions.AllowAny, )
     pagination_class = CustomPagination
@@ -56,6 +56,14 @@ class ProductRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser, )
+
+class ProductListCategory(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = (permissions.AllowAny, )
+    pagination_class = CustomPagination
+
+    def get_queryset(self):
+        return Product.objects.filter(category_id=self.kwargs['category_id']).order_by('-id')
 
 class OrderCreateView(generics.CreateAPIView):
     queryset = Order.objects.all()

@@ -15,6 +15,7 @@ urlpatterns = [
     path('create-product/', ProductCreateView.as_view()),
     path('product/<int:pk>/', ProductRetrieveUpdateView.as_view()),
     path('products/', ProductListView.as_view()),
+    path('category-products/<int:category_id>/', ProductListCategory.as_view()),
     
     # Order
     path('create-order/', OrderCreateView.as_view()),
