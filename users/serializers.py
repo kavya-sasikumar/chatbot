@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from django.db.models import Avg, Count
 from .models import *
 
 class UserCreateSerializer(serializers.ModelSerializer):
@@ -67,12 +68,34 @@ class CategoriesSerializer(serializers.ModelSerializer):
         model = Categories
         fields = ('id', 'title', 'description', 'date_created', 'date_updated')
 
+class ReviewSerializer(serializers.ModelSerializer):
+     """A serializer for the review item model in our DB to convert the format to JSON """
+     class Meta: 
+         model=Review
+         field=('user', 'product', 'rating', 'comment', 'date_created', 'date_updated')
+
 class ProductSerializer(serializers.ModelSerializer):
     """A serializer for the product model in our DB to convert the format to JSON """
+    average_rating = serializers.SerializerMethodField()
+    total_reviews = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = ('id', 'title', 'description', 'color', 'price', 'image', 'stock', 'is_available', 'date_created', 'date_updated', 'category')
+        fields = (
+            'id', 'title', 'description', 'color', 'price', 'image', 'stock', 
+            'is_available', 'date_created', 'date_updated', 'category', 
+            'average_rating', 'total_reviews'
+        )
+
+    def get_average_rating(self, obj):
+        """Calculate and return the average rating for the product."""
+        avg_rating = Review.objects.filter(product=obj).aggregate(Avg('rating'))
+        return avg_rating['rating__avg'] if avg_rating['rating__avg'] is not None else 0
+
+    def get_total_reviews(self, obj):
+        """Calculate and return the total number of reviews for the product."""
+        total_reviews = Review.objects.filter(product=obj).aggregate(Count('id'))
+        return total_reviews['id__count']
 
 class OrderSerializer(serializers.ModelSerializer): 
     """A serializer for the order model in our DB to convert the format to JSON """
@@ -86,12 +109,6 @@ class OrderItemSerializer(serializers.ModelSerializer):
      class Meta: 
          model = OrderItem 
          fields = ('order', 'product', 'quantitiy', 'price')
-
-class ReviewSerializer(serializers.ModelSerializer):
-     """A serializer for the review item model in our DB to convert the format to JSON """
-     class Meta: 
-         model=Review
-         field=('user', 'product', 'rating', 'comment', 'date_created', 'date_updated')
 
 class ChatMessageSerializer(serializers.ModelSerializer):
      """A serializer for the chat message item model in our DB to convert the format to JSON """
