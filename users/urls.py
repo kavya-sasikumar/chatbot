@@ -30,6 +30,7 @@ urlpatterns = [
     path('create-review/', ReviewCreateView.as_view()),
     path('review/<int:pk>/', ReviewRetrieveUpdateView.as_view()),
     path('reviews/', ReviewListView.as_view()),
+    path('product-reviews/<int:product_id>/', ReviewListViewUser.as_view()),
 
     # Chat Message
     path('create-chatmessage/', ChatMessageCreateView.as_view()),

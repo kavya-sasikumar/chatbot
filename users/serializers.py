@@ -72,7 +72,7 @@ class ReviewSerializer(serializers.ModelSerializer):
      """A serializer for the review item model in our DB to convert the format to JSON """
      class Meta: 
          model=Review
-         field=('user', 'product', 'rating', 'comment', 'date_created', 'date_updated')
+         fields=('user', 'product', 'rating', 'comment', 'date_created', 'date_updated')
 
 class ProductSerializer(serializers.ModelSerializer):
     """A serializer for the product model in our DB to convert the format to JSON """
@@ -114,10 +114,10 @@ class ChatMessageSerializer(serializers.ModelSerializer):
      """A serializer for the chat message item model in our DB to convert the format to JSON """
      class Meta: 
          model=ChatMessage
-         field=('user', 'message', 'timestamp')
+         fields=('user', 'message', 'timestamp')
 
 class ChatSessionSerializer(serializers.ModelSerializer):
      """A serializer for the chat session item model in our DB to convert the format to JSON """
      class Meta: 
          model=ChatSession
-         field=('user', 'start_time', 'end_time')
+         fields=('user', 'start_time', 'end_time')

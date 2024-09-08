@@ -107,6 +107,13 @@ class ReviewRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     serializer_class = ReviewSerializer
     permission_classes = (permissions.IsAuthenticated, )
 
+class ReviewListViewUser(generics.ListAPIView):
+    serializer_class = ReviewSerializer
+    permission_classes = (permissions.AllowAny, )
+
+    def get_queryset(self):
+        return Review.objects.filter(product_id=self.kwargs['product_id']).order_by('-id')[:3]
+
 class ChatMessageCreateView(generics.CreateAPIView):
     queryset = ChatMessage.objects.all()
     serializer_class = ChatMessageSerializer
