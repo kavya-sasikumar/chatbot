@@ -70,9 +70,16 @@ class CategoriesSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
      """A serializer for the review item model in our DB to convert the format to JSON """
+     username = serializers.CharField(source="user.username", read_only=True)
      class Meta: 
          model=Review
-         fields=('user', 'product', 'rating', 'comment', 'date_created', 'date_updated')
+         fields=('user', 'product', 'rating', 'comment', 'date_created', 'date_updated',"username")
+         
+         extra_kwargs = {
+            "user": {'write_only': True},
+            "username": {'read_only': True},
+         }
+
 
 class ProductSerializer(serializers.ModelSerializer):
     """A serializer for the product model in our DB to convert the format to JSON """
