@@ -40,11 +40,10 @@ class GetUserIDSerializer(serializers.ModelSerializer):
     """A serializer class for the User Model to get the authenticated user's data"""
     user_data = serializers.SerializerMethodField('get_user_data')
     username = serializers.SerializerMethodField('get_username')
-    profile_id = serializers.SerializerMethodField('get_profile_id')
 
     class Meta:
         model = User
-        fields = ('id', 'user_data', 'username', 'profile_id')
+        fields = ('id', 'user_data', 'username')
 
     def get_user_data(self, obj):
         requestUser = self.context['request'].user
@@ -56,10 +55,6 @@ class GetUserIDSerializer(serializers.ModelSerializer):
         request = self.context['request']
         return requestUser.username
 
-    def get_profile_id(self, obj):
-        requestUser = self.context['request'].user
-        request = self.context['request']
-        return requestUser.profile.id
 
 class CategoriesSerializer(serializers.ModelSerializer):
     """A serializer for the categories model in our DB to convert the format to JSON """

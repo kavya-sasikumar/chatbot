@@ -26,6 +26,13 @@ def user_create(request):
             data = serializer.errors
         return Response(data)
     
+class UserData(generics.ListAPIView):
+    """View to get authenticated user's data"""
+    queryset = User.objects.all().order_by('-id')
+    serializer_class = GetUserIDSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+    pagination_class = CustomPagination
+
 class CategoryCreateView(generics.CreateAPIView):
     queryset = Categories.objects.all()
     serializer_class = CategoriesSerializer
