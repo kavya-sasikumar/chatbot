@@ -103,7 +103,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
      """A serializer for the order item model in our DB to convert the format to JSON """
      class Meta: 
          model = OrderItem 
-         fields = ('order', 'product', 'quantity', 'price')
+         fields = ('product', 'quantity', 'price')
 
 class OrderSerializer(serializers.ModelSerializer): 
     """A serializer for the order model in our DB to convert the format to JSON """
