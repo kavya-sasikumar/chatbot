@@ -99,18 +99,26 @@ class ProductSerializer(serializers.ModelSerializer):
         total_reviews = Review.objects.filter(product=obj).aggregate(Count('id'))
         return total_reviews['id__count']
 
-class OrderSerializer(serializers.ModelSerializer): 
-    """A serializer for the order model in our DB to convert the format to JSON """
-
-    class Meta: 
-        model = Order 
-        fields = ('user', 'address', 'total_amount', 'status_type', 'order_date', 'date_update')
-
 class OrderItemSerializer(serializers.ModelSerializer):
      """A serializer for the order item model in our DB to convert the format to JSON """
      class Meta: 
          model = OrderItem 
-         fields = ('order', 'product', 'quantitiy', 'price')
+         fields = ('order', 'product', 'quantity', 'price')
+
+class OrderSerializer(serializers.ModelSerializer): 
+    """A serializer for the order model in our DB to convert the format to JSON """
+    items = OrderItemSerializer(many=True)
+
+    class Meta: 
+        model = Order 
+        fields = ('user', 'address', 'total_amount', 'status_type', 'order_date', 'date_updated', 'items')
+
+    def create(self, validated_data):
+        items_data = validated_data.pop('items')
+        order = Order.objects.create(**validated_data)
+        for item_data in items_data:
+            OrderItem.objects.create(order=order, **item_data)
+        return order
 
 class ChatMessageSerializer(serializers.ModelSerializer):
      """A serializer for the chat message item model in our DB to convert the format to JSON """

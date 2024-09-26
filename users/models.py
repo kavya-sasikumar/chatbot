@@ -43,7 +43,7 @@ class Order(models.Model):
     status_type = models.CharField(choices=StatusType.choices, max_length=9, default='PENDING')
     order_date = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-
+ 
     #For the admin view
     def __str__(self):
         return f'{self.id} Order for {self.user.username}'
