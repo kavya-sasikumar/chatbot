@@ -55,7 +55,7 @@ class OrderItem(models.Model):
     price = models.DecimalField(max_digits=20, decimal_places=2)
 
     def __str__(self):
-        return f'{self.quantity} x {self.product.name}'
+        return f'{self.quantity} x {self.product.title}'
  
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

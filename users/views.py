@@ -6,12 +6,15 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from rest_framework.decorators import api_view, permission_classes
 from chatbot.pagination import CustomPagination
+import requests
+from transformers import pipeline
 
 # from chatbot.pagination import CustomPagination
 from django.contrib.auth.models import User
 from .models import *
 from .serializers import *
 
+fashion_advisor=pipeline("text-generation", model="gpt2")
 """View to create a user"""
 @api_view(['POST',])
 @permission_classes((permissions.AllowAny,))
@@ -155,3 +158,28 @@ class ChatSessionRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     serializer_class = ChatSessionSerializer
     permission_classes = (permissions.AllowAny, )
  
+class FashionChatbot(APIView):
+    def post(self,request,*args,**kwargs):
+        user_input = request.data.get("message")
+        user_id = request.data.get("user_id")
+
+        permission_classes = (permissions.AllowAny, )
+
+        user=User.objects.get(id=user_id)
+
+        chat_message=ChatMessage.objects.create(user=user, message=user_input)
+
+        bot_response=fashion_advisor(user_input,max_length=50)[0]["generated_text"]
+
+        related_products=Product.objects.filter(description__icontains=user_input)
+
+        response_message=f"{bot_response}\n\nhere are some related products:\n"
+
+        for product in related_products:
+            response_message += f"- {product.title} (${product.price})\n"
+
+        return Response({"response": response_message}, status=status.HTTP_200_OK)
+
+
+
+        
