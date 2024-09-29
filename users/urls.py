@@ -12,7 +12,7 @@ urlpatterns = [
     path('category/<int:pk>/', CategoryRetrieveUpdateView.as_view()),
     path('categories/', CategoryListView.as_view()),
 
-    path('chat/', FashionChatbot.as_view()),
+     path('chat/', FashionChatbot.as_view()),
 
     # Product
     path('create-product/', ProductCreateView.as_view()),

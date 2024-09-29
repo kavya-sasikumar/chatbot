@@ -8,13 +8,15 @@ from rest_framework.decorators import api_view, permission_classes
 from chatbot.pagination import CustomPagination
 import requests
 from transformers import pipeline
+import openai 
 
 # from chatbot.pagination import CustomPagination
 from django.contrib.auth.models import User
 from .models import *
 from .serializers import *
 
-fashion_advisor=pipeline("text-generation", model="gpt2")
+openai.api_key="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"
+# fashion_advisor=pipeline("text-generation", model="gpt2-large")
 """View to create a user"""
 @api_view(['POST',])
 @permission_classes((permissions.AllowAny,))
@@ -158,10 +160,25 @@ class ChatSessionRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     serializer_class = ChatSessionSerializer
     permission_classes = (permissions.AllowAny, )
  
+def fashion_advisor(prompt, max_tokens=50):
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo", 
+        messages=[
+            {"role": "system", "content": "You are a fashion advisor."},
+            {"role": "user", "content": prompt},
+        ],
+        max_tokens=max_tokens,
+        temperature=0.7
+    )
+    return response['choices'][0]['message']['content'].strip()
+
 class FashionChatbot(APIView):
     def post(self,request,*args,**kwargs):
         user_input = request.data.get("message")
         user_id = request.data.get("user_id")
+
+        if not user_input or not user_id:
+            return Response({"error": "Missing required parameters"}, status=status.HTTP_400_BAD_REQUEST)
 
         permission_classes = (permissions.AllowAny, )
 
@@ -169,17 +186,27 @@ class FashionChatbot(APIView):
 
         chat_message=ChatMessage.objects.create(user=user, message=user_input)
 
-        bot_response=fashion_advisor(user_input,max_length=50)[0]["generated_text"]
+        try:
+            # ai_prompt = f"Give me fashion advice on how to match {user_input} for a woman"
+            bot_response=fashion_advisor(user_input)
 
-        related_products=Product.objects.filter(description__icontains=user_input)
+            related_products = Product.objects.filter(
+                Q(title__icontains=user_input) | Q(description__icontains=user_input) | Q(color__icontains=user_input)
+            )
+ 
+            response_message=f"{bot_response}\n\nhere are some related products:\n"
+            if related_products.exists():
+                for product in related_products:
+                    response_message += f"- {product.title} (${product.price})\n"
+            else:
+                response_message += "No matching products found."
 
-        response_message=f"{bot_response}\n\nhere are some related products:\n"
-
-        for product in related_products:
-            response_message += f"- {product.title} (${product.price})\n"
-
-        return Response({"response": response_message}, status=status.HTTP_200_OK)
+            return Response({"response": response_message}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 
+
+    
         
