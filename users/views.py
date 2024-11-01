@@ -7,7 +7,7 @@ from django.db.models import Q
 from rest_framework.decorators import api_view, permission_classes
 from chatbot.pagination import CustomPagination
 import requests
-from transformers import pipeline
+# from transformers import pipeline
 import openai 
 
 # from chatbot.pagination import CustomPagination
