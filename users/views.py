@@ -160,11 +160,11 @@ class ChatSessionRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     serializer_class = ChatSessionSerializer
     permission_classes = (permissions.AllowAny, )
  
-def fashion_advisor(prompt, max_tokens=50):
+def fashion_advisor(prompt, max_tokens=200):
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo", 
         messages=[
-            {"role": "system", "content": "You are a fashion advisor."},
+            {"role": "system", "content": "You are a fashion advisor for females ONLY."},
             {"role": "user", "content": prompt},
         ],
         max_tokens=max_tokens,
