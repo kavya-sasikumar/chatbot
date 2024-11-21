@@ -205,8 +205,16 @@ class FashionChatbot(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
-
-
+class EventListView(generics.ListAPIView):
+    queryset = Event.objects.all().order_by('id')
+    serializer_class = EventSerializer
+    permission_classes = (permissions.AllowAny, )
     
+class EventImageListView(generics.ListAPIView):
+    # queryset = ChatMessage.objects.all().order_by('id')
+    serializer_class = EventImageSerializer
+    permission_classes = (permissions.AllowAny, )
+
+    def get_queryset(self):
+        return EventImage.objects.filter(event_id=self.kwargs['event_id']).order_by('id')
         
