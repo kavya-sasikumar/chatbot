@@ -12,6 +12,7 @@ urlpatterns = [
     path('category/<int:pk>/', CategoryRetrieveUpdateView.as_view()),
     path('categories/', CategoryListView.as_view()),
 
+    # Chat
     path('chat/', FashionChatbot.as_view()),
 
     # Product
@@ -44,6 +45,10 @@ urlpatterns = [
     path('create-chatsession/', ChatSessionCreateView.as_view()),
     path('chatsession/<int:pk>/', ChatSessionRetrieveUpdateView.as_view()),
     path('chatsessions/', ChatSessionListView.as_view()),
+
+    # Events
+    path('events/', EventListView.as_view()),
+    path('event-images/<int:event_id>/', EventImageListView.as_view()),
  ]
 
 
