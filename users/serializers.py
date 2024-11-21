@@ -136,7 +136,7 @@ class EventSerializer(serializers.ModelSerializer):
      """A serializer for the event item model in our DB to convert the format to JSON """
      class Meta: 
          model = Event
-         fields=('title', 'description', 'slug', 'date_created', 'date_updated')
+         fields=('id', 'title', 'description', 'slug', 'date_created', 'date_updated')
 
 class EventImageSerializer(serializers.ModelSerializer):
      """A serializer for the event image item model in our DB to convert the format to JSON """
