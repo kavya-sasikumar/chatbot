@@ -252,37 +252,52 @@ class EventImageListView(generics.ListAPIView):
 #             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class GenerateAiStylingImage(APIView):
-    permission_classes = (permissions.AllowAny, )
+    permission_classes = (permissions.AllowAny,)
 
     def post(self, request, *args, **kwargs):
         descriptions = request.data.get("descriptions")
-
+        
         if not descriptions:
             return Response({"error": "Missing required parameters"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            # Construct the AI prompt
-            ai_prompt = (
-                f"{descriptions} I want an image that combines all three outfit descriptions "
-                "BUT I want a totally new outfit generated based off of the theme of all three outfit "
-                "descriptions. I just want one NEW outfit in the image. After that, generate two other "
-                "images with different styles from the first one you generated but also based on the "
-                "descriptions I gave to you. for a woman."
-            )
-
-            # Call OpenAI's API to generate images
-            response = openai.Image.create(
+            # Generate first image
+            first_image_prompt = f"{descriptions} Generate a unique, innovative women's outfit that synthesizes the essence of these three style descriptions. Make the outfit creative and fashion-forward."
+            first_image = openai.Image.create(
                 model="dall-e-3",
-                prompt=ai_prompt,
-                n=3,  # Generate 3 images
-                size="1024x1024"  # You can adjust the size as needed
+                prompt=first_image_prompt,
+                n=1,
+                size="1024x1024"
             )
+            first_image_url = first_image.data[0].url
 
-            # Extract image URLs from response
-            image_urls = [img['url'] for img in response['data']]
+            # Generate second variant image
+            second_image_prompt = f"{descriptions} Create an alternative stylish women's outfit inspired by the previous design, but with a different aesthetic interpretation."
+            second_image = openai.Image.create(
+                model="dall-e-3",
+                prompt=second_image_prompt,
+                n=1,
+                size="1024x1024"
+            )
+            second_image_url = second_image.data[0].url
 
-            return Response({"image_urls": image_urls}, status=status.HTTP_200_OK)
+            # Generate third variant image
+            third_image_prompt = f"{descriptions} Design a third unique women's outfit that provides a distinct style perspective while maintaining the core style essence."
+            third_image = openai.Image.create(
+                model="dall-e-3",
+                prompt=third_image_prompt,
+                n=1,
+                size="1024x1024"
+            )
+            third_image_url = third_image.data[0].url
+
+            return Response({
+                "images": [
+                    first_image_url, 
+                    second_image_url, 
+                    third_image_url
+                ]
+            }, status=status.HTTP_200_OK)
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
