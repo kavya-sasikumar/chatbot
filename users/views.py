@@ -272,6 +272,7 @@ class GenerateAiStylingImage(APIView):
 
             # Call OpenAI's API to generate images
             response = openai.Image.create(
+                model="dall-e-3",
                 prompt=ai_prompt,
                 n=3,  # Generate 3 images
                 size="1024x1024"  # You can adjust the size as needed
