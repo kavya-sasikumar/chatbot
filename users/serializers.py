@@ -129,5 +129,19 @@ class ChatMessageSerializer(serializers.ModelSerializer):
 class ChatSessionSerializer(serializers.ModelSerializer):
      """A serializer for the chat session item model in our DB to convert the format to JSON """
      class Meta: 
-         model=ChatSession
+         model = ChatSession
          fields=('user', 'start_time', 'end_time')
+
+class EventSerializer(serializers.ModelSerializer):
+     """A serializer for the event item model in our DB to convert the format to JSON """
+     class Meta: 
+         model = Event
+         fields=('title', 'description', 'slug', 'date_created', 'date_updated')
+
+class EventImageSerializer(serializers.ModelSerializer):
+     """A serializer for the event image item model in our DB to convert the format to JSON """
+     class Meta: 
+         model = EventImage
+         fields=('event', 'image', 'description', 'date_created', 'date_updated')
+         
+        
