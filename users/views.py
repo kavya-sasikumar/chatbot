@@ -262,7 +262,7 @@ class GenerateAiStylingImage(APIView):
 
         try:
             # Generate first image
-            first_image_prompt = f"{descriptions} Generate a unique, innovative women's outfit that synthesizes the essence of these three style descriptions. Make the outfit creative and fashion-forward."
+            first_image_prompt = f"{descriptions} i want an image that combines all three outfit descriptions in each of the maps in the list sent BUT i want a totally new outfit generated based off of the theme of all three outfit descriptions i just want one NEW outfit in the image. Don’t give me just concepts, let me see it on an actual human model as something I can wear for an event as a woman."
             first_image = openai.Image.create(
                 model="dall-e-3",
                 prompt=first_image_prompt,
@@ -272,7 +272,7 @@ class GenerateAiStylingImage(APIView):
             first_image_url = first_image.data[0].url
 
             # Generate second variant image
-            second_image_prompt = f"{descriptions} Create an alternative stylish women's outfit inspired by the previous design, but with a different aesthetic interpretation."
+            second_image_prompt = f"{descriptions} i want an image that combines all three outfit descriptions in each of the maps in the list sent BUT i want a totally new outfit generated based off of the theme of all three outfit descriptions i just want one NEW outfit in the image. Don’t give me just concepts, let me see it on an actual human model as something I can wear for an event as a woman."
             second_image = openai.Image.create(
                 model="dall-e-3",
                 prompt=second_image_prompt,
@@ -282,7 +282,7 @@ class GenerateAiStylingImage(APIView):
             second_image_url = second_image.data[0].url
 
             # Generate third variant image
-            third_image_prompt = f"{descriptions} Design a third unique women's outfit that provides a distinct style perspective while maintaining the core style essence."
+            third_image_prompt = f"{descriptions} i want an image that combines all three outfit descriptions in each of the maps in the list sent BUT i want a totally new outfit generated based off of the theme of all three outfit descriptions i just want one NEW outfit in the image. Don’t give me just concepts, let me see it on an actual human model as something I can wear for an event as a woman."
             third_image = openai.Image.create(
                 model="dall-e-3",
                 prompt=third_image_prompt,
