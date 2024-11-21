@@ -282,20 +282,20 @@ class GenerateAiStylingImage(APIView):
             second_image_url = second_image.data[0].url
 
             # Generate third variant image
-            third_image_prompt = f"{descriptions} i want an image that combines all three outfit descriptions in each of the maps in the list sent BUT i want a totally new outfit generated based off of the theme of all three outfit descriptions i just want one NEW outfit in the image. Don’t give me just concepts, let me see it on an actual human model as something I can wear for an event as a woman."
-            third_image = openai.Image.create(
-                model="dall-e-3",
-                prompt=third_image_prompt,
-                n=1,
-                size="1024x1024"
-            )
-            third_image_url = third_image.data[0].url
+            # third_image_prompt = f"{descriptions} i want an image that combines all three outfit descriptions in each of the maps in the list sent BUT i want a totally new outfit generated based off of the theme of all three outfit descriptions i just want one NEW outfit in the image. Don’t give me just concepts, let me see it on an actual human model as something I can wear for an event as a woman."
+            # third_image = openai.Image.create(
+            #     model="dall-e-3",
+            #     prompt=third_image_prompt,
+            #     n=1,
+            #     size="1024x1024"
+            # )
+            # third_image_url = third_image.data[0].url
 
             return Response({
                 "images": [
                     first_image_url,
-                    second_image_url, 
-                    third_image_url
+                    second_image_url 
+                    # third_image_url
                 ]
             }, status=status.HTTP_200_OK)
 
