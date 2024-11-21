@@ -217,4 +217,38 @@ class EventImageListView(generics.ListAPIView):
 
     def get_queryset(self):
         return EventImage.objects.filter(event_id=self.kwargs['event_id']).order_by('id')
+
+class GenerateAiStylingImage(APIView):
+    def post(self,request,*args,**kwargs):
+        descriptions = request.data.get("descriptions")
+        # user_id = request.data.get("user_id")
+
+        if not descriptions:
+            return Response({"error": "Missing required parameters"}, status=status.HTTP_400_BAD_REQUEST)
+
+        permission_classes = (permissions.AllowAny, )
+
+        # user=User.objects.get(id=user_id)
+
+        # chat_message=ChatMessage.objects.create(user=user, message=user_input)
+
+        try:
+            ai_prompt = f"{descriptions} I want an image that combines all three outfit descriptions BUT i want a totally new outfit generated based off of the theme of all three outfit descriptions i just want one NEW outfit in the image. After that, generate two other images with different styles from the first one you generated but also based on the descriptions I gave to you.
+ for a woman"
+            bot_response=fashion_advisor(user_input)
+
+            # related_products = Product.objects.filter(
+            #     Q(title__icontains=user_input) | Q(description__icontains=user_input) | Q(color__icontains=user_input)
+            # )
+ #this is github code
+            response_message=f"{bot_response}"
+            # if related_products.exists():
+            #     for product in related_products:
+            #         response_message += f"- {product.title} (${product.price})\n"
+            # else:
+            #     response_message += "No matching products found."
+
+            return Response({"response": response_message}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
