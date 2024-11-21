@@ -233,9 +233,8 @@ class GenerateAiStylingImage(APIView):
         # chat_message=ChatMessage.objects.create(user=user, message=user_input)
 
         try:
-            ai_prompt = f"{descriptions} I want an image that combines all three outfit descriptions BUT i want a totally new outfit generated based off of the theme of all three outfit descriptions i just want one NEW outfit in the image. After that, generate two other images with different styles from the first one you generated but also based on the descriptions I gave to you.
- for a woman"
-            bot_response=fashion_advisor(user_input)
+            ai_prompt = f"{descriptions} I want an image that combines all three outfit descriptions BUT i want a totally new outfit generated based off of the theme of all three outfit descriptions i just want one NEW outfit in the image. After that, generate two other images with different styles from the first one you generated but also based on the descriptions I gave to you. for a woman"
+            bot_response=fashion_advisor(ai_prompt)
 
             # related_products = Product.objects.filter(
             #     Q(title__icontains=user_input) | Q(description__icontains=user_input) | Q(color__icontains=user_input)
