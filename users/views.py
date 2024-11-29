@@ -194,7 +194,7 @@ class FashionChatbot(APIView):
                 Q(title__icontains=user_input) | Q(description__icontains=user_input) | Q(color__icontains=user_input)
             )
  #this is github code
-            response_message=f"{bot_response}\n\nhere are some related products:\n"
+            response_message=f"{bot_response}\n\nHere are some related products:\n"
             if related_products.exists():
                 for product in related_products:
                     response_message += f"- {product.title} (${product.price})\n"
