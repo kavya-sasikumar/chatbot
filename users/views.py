@@ -206,7 +206,7 @@ class FashionChatbot(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class EventListView(generics.ListAPIView):
-    queryset = Event.objects.all().order_by('id')
+    queryset = Event.objects.all().order_by('title')
     serializer_class = EventSerializer
     permission_classes = (permissions.AllowAny, )
     
