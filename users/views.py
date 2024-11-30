@@ -312,7 +312,7 @@ class GenerateAiStylingText(APIView):
         permission_classes = (permissions.AllowAny, )
 
         try:
-            ai_prompt = f"Take these image selections by a particular user into consideration: {descriptions} Give the response as though you're referring to the user in the second person where it entails a profile of what kind of styling the user likes and do so in a horoscope-like manner. The response should be in no more than 2 paragraphs and the word: horoscope shouldn't be used in it."
+            ai_prompt = f"Take these image selections by a particular user into consideration: {descriptions} Give the response as though you're referring to the user in the second person where it entails a profile of what kind of styling the user likes and do so in a horoscope-like manner. The response should be in no more than 2 paragraphs and the word: horoscope shouldn't be used in it. Make keywords or phrases bold in your response."
             bot_response=fashion_advisor(ai_prompt)
 
             related_products = Product.objects.filter(
