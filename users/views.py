@@ -301,3 +301,31 @@ class GenerateAiStylingImage(APIView):
 
         except Exception as e:
             return Response({"error": "An unexpected error occurred: " + str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class GenerateAiStylingText(APIView):
+    def post(self,request,*args,**kwargs):
+        descriptions = request.data.get("descriptions")
+
+        if not descriptions:
+            return Response({"error": "Missing required parameters"}, status=status.HTTP_400_BAD_REQUEST)
+
+        permission_classes = (permissions.AllowAny, )
+
+        try:
+            ai_prompt = f"Take these image selections by a particular user into consideration: {descriptions} Give the response as though you're referring to the user in the second person where it entails a profile of what kind of styling the user likes and do so in a horoscope-like manner. The response should be in no more than 2 paragraphs and the word: horoscope shouldn't be used in it."
+            bot_response=fashion_advisor(user_input)
+
+            related_products = Product.objects.filter(
+                Q(title__icontains=user_input) | Q(description__icontains=user_input) | Q(color__icontains=user_input)
+            )
+
+            response_message=f"{bot_response}\n\nHere are some related products:\n"
+            if related_products.exists():
+                for product in related_products:
+                    response_message += f"- {product.title} (${product.price})\n"
+            else:
+                response_message += "No matching products found."
+
+            return Response({"response": response_message}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
