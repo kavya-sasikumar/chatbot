@@ -316,7 +316,7 @@ class GenerateAiStylingText(APIView):
             bot_response=fashion_advisor(ai_prompt)
 
             related_products = Product.objects.filter(
-                Q(title__icontains=user_input) | Q(description__icontains=user_input) | Q(color__icontains=user_input)
+                Q(title__icontains=descriptions) | Q(description__icontains=descriptions) | Q(color__icontains=descriptions)
             )
 
             response_message=f"{bot_response}\n\nHere are some related products:\n"
