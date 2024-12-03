@@ -51,6 +51,9 @@ urlpatterns = [
     path('event-images/<int:event_id>/', EventImageListView.as_view()),
     path('generate-ai-styling-images/', GenerateAiStylingImage.as_view()),
     path('generate-ai-styling-text/', GenerateAiStylingText.as_view()),
+
+    # On-boarding
+    path('random-event-images/', RandomEventImagesAPIView.as_view()),
  ]
 
 
