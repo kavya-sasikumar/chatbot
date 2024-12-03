@@ -346,7 +346,7 @@ class RandomEventImagesAPIView(APIView):
         image_data = [
             {
                 "event_title": image.event.title,
-                "image_url": image.image,
+                "image_url": request.build_absolute_uri(image.image.url),
                 "description": image.description,
                 "date_created": image.date_created,
                 "date_updated": image.date_updated,
