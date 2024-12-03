@@ -7,6 +7,7 @@ from django.db.models import Q
 from rest_framework.decorators import api_view, permission_classes
 from chatbot.pagination import CustomPagination
 import requests
+import random
 # from transformers import pipeline
 import openai 
 
@@ -329,3 +330,29 @@ class GenerateAiStylingText(APIView):
             return Response({"response": response_message}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class RandomEventImagesAPIView(APIView):
+    """
+    API View to fetch 25 random EventImage records and return their details as JSON.
+    """
+
+    def get(self, request, *args, **kwargs):
+        # Fetch all EventImage records and shuffle to pick 25 randomly
+        all_images = list(EventImage.objects.all())
+        random_images = random.sample(all_images, min(len(all_images), 25))
+
+        # Prepare the response data
+        image_data = [
+            {
+                "event_title": image.event.title,
+                "image_url": image.image.url,
+                "description": image.description,
+                "date_created": image.date_created,
+                "date_updated": image.date_updated,
+            }
+            for image in random_images
+        ]
+
+        # Return the data as a JSON response
+        return Response({"images": image_data})
