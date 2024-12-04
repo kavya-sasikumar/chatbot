@@ -50,7 +50,7 @@ urlpatterns = [
     path('events/', EventListView.as_view()),
     path('event-images/<int:event_id>/', EventImageListView.as_view()),
     path('generate-ai-styling-images/', GenerateAiStylingImage.as_view()),
-    path('generate-ai-styling-images-event/', GenerateAiStylingImageEvent.as_view()),
+    path('generate-ai-styling-text-event/', GenerateAiStylingTextEvent.as_view()),
     path('generate-ai-styling-text/', GenerateAiStylingText.as_view()),
 
     # On-boarding
