@@ -39,6 +39,11 @@ class UserData(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated, )
     pagination_class = CustomPagination
 
+class UserRetrieveUpdateView(generics.RetrieveUpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (permissions.AllowAny, )
+
 class CategoryCreateView(generics.CreateAPIView):
     queryset = Categories.objects.all()
     serializer_class = CategoriesSerializer
