@@ -55,6 +55,13 @@ class GetUserIDSerializer(serializers.ModelSerializer):
         request = self.context['request']
         return requestUser.username
 
+class UserSerializer(serializers.ModelSerializer):
+
+    """Update User Model to have first name and last name"""
+
+    class Meta:
+        model = User
+        fields = ('id', 'first_name', 'last_name')
 
 class CategoriesSerializer(serializers.ModelSerializer):
     """A serializer for the categories model in our DB to convert the format to JSON """
