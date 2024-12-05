@@ -6,6 +6,7 @@ urlpatterns = [
     #Users
     path('create-user/', user_create),
     path('check-user/', UserData.as_view()),
+    path('update-user-names/', UserRetrieveUpdateView.as_view()),
     
     # Categories
     path('create-categories/', CategoryCreateView.as_view()),
