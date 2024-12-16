@@ -386,7 +386,7 @@ class RandomEventImagesAPIView(APIView):
         return Response({"images": image_data})
 
 class DeactivateAccountAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = (permissions.IsAuthenticated, )
 
     def post(self, request):
         try:
