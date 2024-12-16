@@ -384,3 +384,25 @@ class RandomEventImagesAPIView(APIView):
 
         # Return the data as a JSON response
         return Response({"images": image_data})
+
+class DeactivateAccountAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            # Get the authenticated user
+            user = request.user
+            # Set is_active to False
+            user.is_active = False
+            user.save()
+            return Response(
+                {"message": "Account has been deactivated successfully."},
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            return Response(
+                {"error": f"An error occurred: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
