@@ -14,6 +14,11 @@ urlpatterns = [
     path('category/<int:pk>/', CategoryRetrieveUpdateView.as_view()),
     path('categories/', CategoryListView.as_view()),
 
+    # Vendor
+    path('create-vendor/', VendorCreateView.as_view()),
+    path('vendor/<int:pk>/', VendorRetrieveUpdateView.as_view()),
+    path('vendors/', VendorListView.as_view()),
+
     # Chat
     path('chat/', FashionChatbot.as_view()),
 

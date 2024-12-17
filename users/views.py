@@ -52,13 +52,27 @@ class CategoryCreateView(generics.CreateAPIView):
 class CategoryListView(generics.ListAPIView):
     queryset = Categories.objects.all().order_by('id')
     serializer_class = CategoriesSerializer
-
     permission_classes = (permissions.AllowAny, )
 
 class CategoryRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     queryset = Categories.objects.all()
     serializer_class = CategoriesSerializer
     permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser, )
+
+class VendorCreateView(generics.CreateAPIView):
+    queryset = Vendor.objects.all()
+    serializer_class = VendorSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+class VendorListView(generics.ListAPIView):
+    queryset = Vendor.objects.all().order_by('id')
+    serializer_class = VendorSerializer
+    permission_classes = (permissions.AllowAny, )
+
+class VendorRetrieveUpdateView(generics.RetrieveUpdateAPIView):
+    queryset = Vendor.objects.all()
+    serializer_class = VendorSerializer
+    permission_classes = (permissions.IsAuthenticated, )
 
 class ProductCreateView(generics.CreateAPIView):
     queryset = Product.objects.all()

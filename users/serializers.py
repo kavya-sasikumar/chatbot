@@ -70,6 +70,14 @@ class CategoriesSerializer(serializers.ModelSerializer):
         model = Categories
         fields = ('id', 'title', 'description', 'date_created', 'date_updated')
 
+class VendorSerializer(serializers.ModelSerializer):
+    """A serializer for the Vendor model in our DB to convert the format to JSON """
+
+    class Meta:
+        model = Vendor
+        fields = ('id', 'user', 'logo', 'store_name', 'address', 'phone_number', 'rating',
+                  'account_balance', 'commission_rate', 'bank_account_details', 'date_created', 'date_updated')
+
 class ReviewSerializer(serializers.ModelSerializer):
      """A serializer for the review item model in our DB to convert the format to JSON """
      username = serializers.CharField(source="user.username", read_only=True)
@@ -82,7 +90,6 @@ class ReviewSerializer(serializers.ModelSerializer):
             "username": {'read_only': True},
          }
 
-
 class ProductSerializer(serializers.ModelSerializer):
     """A serializer for the product model in our DB to convert the format to JSON """
     average_rating = serializers.SerializerMethodField()
@@ -93,7 +100,7 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'title', 'description', 'color', 'price', 'image', 'stock', 
             'is_available', 'date_created', 'date_updated', 'category', 
-            'average_rating', 'total_reviews'
+            'average_rating', 'total_reviews', 'user'
         )
 
     def get_average_rating(self, obj):
@@ -110,7 +117,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
      """A serializer for the order item model in our DB to convert the format to JSON """
      class Meta: 
          model = OrderItem 
-         fields = ('product', 'quantity', 'price')
+         fields = ('product', 'quantity', 'price', 'vendor')
 
 class OrderSerializer(serializers.ModelSerializer): 
     """A serializer for the order model in our DB to convert the format to JSON """
