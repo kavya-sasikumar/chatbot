@@ -16,9 +16,28 @@ class Categories(models.Model):
     #For the admin view
     def __str__(self):
         return f'{self.title} Category'
+    
+class Vendor(models.Model):
+    """ Vendor Model to handle user's that are vendors on Kavess """
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    logo = models.ImageField(default='default.jpg', upload_to='vendor_pics')
+    store_name = models.CharField(max_length=255)
+    address = models.TextField()
+    phone_number = models.CharField(max_length=15)
+    rating = models.PositiveIntegerField(default=0.0)
+    account_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    commission_rate = models.DecimalField(max_digits=5, decimal_places=2, default=15.00)  
+    bank_account_details = models.JSONField(blank=True, null=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
+    # For the admin view
+    def __str__(self):
+        return f'{self.store_name} Vendor'
 
 class Product(models.Model):
     """ Product Class to keep details of a Product """
+    user = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField()
     color = models.CharField(max_length=255)
@@ -32,7 +51,7 @@ class Product(models.Model):
 
     #For the admin view
     def __str__(self):
-        return f'{self.title} Product'
+        return f'{self.title} Product from vendor: {self.user.store_name}'
     
 class Order(models.Model):
     """ Order Class to keep details of a Product Order """
@@ -53,6 +72,7 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=20, decimal_places=2)
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='ordervendor')
 
     def __str__(self):
         return f'{self.quantity} x {self.product.title}'
