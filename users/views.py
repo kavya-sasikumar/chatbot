@@ -73,6 +73,7 @@ class VendorRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     # queryset = Vendor.objects.all()
     serializer_class = VendorSerializer
     permission_classes = (permissions.IsAuthenticated, )
+    lookup_field = 'user_id'
 
     def get_queryset(self):
         return Vendor.objects.filter(user_id=self.kwargs['user_id']).order_by('-id')
