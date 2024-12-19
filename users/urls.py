@@ -16,7 +16,7 @@ urlpatterns = [
 
     # Vendor
     path('create-vendor/', VendorCreateView.as_view()),
-    path('vendor/<int:pk>/', VendorRetrieveUpdateView.as_view()),
+    path('vendor/<int:user_id>/', VendorRetrieveUpdateView.as_view()),
     path('vendors/', VendorListView.as_view()),
 
     # Chat
