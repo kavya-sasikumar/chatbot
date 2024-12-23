@@ -94,6 +94,14 @@ class ProductRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     serializer_class = ProductSerializer
     permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser, )
 
+class ProductListVendor(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+    pagination_class = CustomPagination
+
+    def get_queryset(self):
+        return Product.objects.filter(user_id=self.kwargs['user_id']).order_by('-id')
+
 class ProductListCategory(generics.ListAPIView):
     serializer_class = ProductSerializer
     permission_classes = (permissions.AllowAny, )
