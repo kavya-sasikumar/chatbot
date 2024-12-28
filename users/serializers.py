@@ -61,7 +61,11 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name')
+        fields = ('id', 'first_name', 'last_name', 'email')
+
+        extra_kwargs = {
+            "email": {'read_only': True},
+         }
 
 class CategoriesSerializer(serializers.ModelSerializer):
     """A serializer for the categories model in our DB to convert the format to JSON """
@@ -114,10 +118,22 @@ class ProductSerializer(serializers.ModelSerializer):
         return total_reviews['id__count']
 
 class OrderItemSerializer(serializers.ModelSerializer):
-     """A serializer for the order item model in our DB to convert the format to JSON """
-     class Meta: 
-         model = OrderItem 
-         fields = ('product', 'quantity', 'price', 'vendor')
+    """Serializer for individual order items."""
+    buyer = serializers.SerializerMethodField()
+    address = serializers.SerializerMethodField()
+
+    class Meta:
+        model = OrderItem
+        fields = ('product', 'quantity', 'price', 'status_type', 'vendor', 'buyer', 'address')
+
+    def get_buyer(self, obj):
+        """Return relevant buyer details."""
+        user = obj.order.user
+        return UserSerializer(user).data
+
+    def get_address(self, obj):
+        """Return the address associated with the order."""
+        return obj.order.address
 
 class OrderSerializer(serializers.ModelSerializer): 
     """A serializer for the order model in our DB to convert the format to JSON """

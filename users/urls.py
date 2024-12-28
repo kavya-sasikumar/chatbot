@@ -37,6 +37,7 @@ urlpatterns = [
     # OrderItem
     path('create-orderitem/', OrderItemCreateView.as_view()),
     path('orderitem/<int:pk>/', OrderItemRetrieveUpdateView.as_view()),
+    path('orderitems/<int:vendor_id>/', OrderItemListVendorView.as_view()),
 
     # Review
     path('create-review/', ReviewCreateView.as_view()),

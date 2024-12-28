@@ -72,6 +72,8 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=20, decimal_places=2)
+    StatusType = models.TextChoices('StatusType', 'PENDING SHIPPED DELIVERED CANCELLED')
+    status_type = models.CharField(choices=StatusType.choices, max_length=9, default='PENDING')
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='ordervendor')
 
     def __str__(self):

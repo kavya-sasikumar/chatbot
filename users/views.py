@@ -137,6 +137,13 @@ class OrderItemRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     serializer_class = OrderItemSerializer
     permission_classes = (permissions.IsAuthenticated, )
 
+class OrderItemListVendorView(generics.ListAPIView):
+    serializer_class = OrderItemSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        return OrderItem.objects.filter(vendor_id=self.kwargs['vendor_id']).order_by('-id')
+
 class ReviewCreateView(generics.CreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
