@@ -136,7 +136,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
         """Return the address associated with the order."""
         return obj.order.address
     
-    def get_product(self, obj):
+    def get_product_details(self, obj):
         """Return relevant product details."""
         product = obj.product
         return ProductSerializer(product).data
