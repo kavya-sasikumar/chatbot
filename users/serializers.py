@@ -121,10 +121,11 @@ class OrderItemSerializer(serializers.ModelSerializer):
     """Serializer for individual order items."""
     buyer = serializers.SerializerMethodField()
     address = serializers.SerializerMethodField()
+    product_details = serializers.SerializerMethodField()
 
     class Meta:
         model = OrderItem
-        fields = ('product', 'quantity', 'price', 'status_type', 'vendor', 'buyer', 'address')
+        fields = ('product', 'quantity', 'price', 'status_type', 'vendor', 'buyer', 'address', 'product_details')
 
     def get_buyer(self, obj):
         """Return relevant buyer details."""
@@ -134,6 +135,11 @@ class OrderItemSerializer(serializers.ModelSerializer):
     def get_address(self, obj):
         """Return the address associated with the order."""
         return obj.order.address
+    
+    def get_product(self, obj):
+        """Return relevant product details."""
+        product = obj.product
+        return ProductSerializer(product).data
 
 class OrderSerializer(serializers.ModelSerializer): 
     """A serializer for the order model in our DB to convert the format to JSON """
