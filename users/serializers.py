@@ -81,6 +81,12 @@ class VendorSerializer(serializers.ModelSerializer):
         model = Vendor
         fields = ('id', 'user', 'logo', 'store_name', 'address', 'phone_number', 'rating',
                   'account_balance', 'commission_rate', 'bank_account_details', 'date_created', 'date_updated')
+        
+        extra_kwargs = {
+            "rating": {'read_only': True},
+            "commission_rate": {'read_only': True},
+            "account_balance": {'read_only': True},
+         }
 
 class ReviewSerializer(serializers.ModelSerializer):
      """A serializer for the review item model in our DB to convert the format to JSON """
