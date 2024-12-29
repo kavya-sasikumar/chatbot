@@ -75,18 +75,34 @@ class CategoriesSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'date_created', 'date_updated')
 
 class VendorSerializer(serializers.ModelSerializer):
-    """A serializer for the Vendor model in our DB to convert the format to JSON """
+    """A serializer for the Vendor model in our DB to convert the format to JSON with total revenue."""
+    total_revenue = serializers.SerializerMethodField()
 
     class Meta:
         model = Vendor
-        fields = ('id', 'user', 'logo', 'store_name', 'address', 'phone_number', 'rating',
-                  'account_balance', 'commission_rate', 'bank_account_details', 'date_created', 'date_updated')
-        
+        fields = (
+            'id', 'user', 'logo', 'store_name', 'address', 'phone_number', 'rating',
+            'account_balance', 'commission_rate', 'bank_account_details', 'date_created',
+            'date_updated', 'total_revenue'
+        )
         extra_kwargs = {
             "rating": {'read_only': True},
             "commission_rate": {'read_only': True},
             "account_balance": {'read_only': True},
-         }
+        }
+
+    def get_total_revenue(self, obj):
+        """Calculate the total revenue for the vendor."""
+        # Fetch all order items related to the vendor
+        order_items = OrderItem.objects.filter(vendor=obj)
+        
+        # Calculate the revenue by summing up item prices and applying the commission rate
+        total_revenue = sum(
+            item.price * ((100 - obj.commission_rate) / 100)
+            for item in order_items
+        )
+        
+        return round(total_revenue, 2)  # Round to 2 decimal places
 
 class ReviewSerializer(serializers.ModelSerializer):
      """A serializer for the review item model in our DB to convert the format to JSON """
