@@ -125,7 +125,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderItem
-        fields = ('product', 'quantity', 'price', 'status_type', 'vendor', 'buyer', 'address', 'product_details')
+        fields = ('id', 'product', 'quantity', 'price', 'status_type', 'vendor', 'buyer', 'address', 'product_details')
 
     def get_buyer(self, obj):
         """Return relevant buyer details."""
