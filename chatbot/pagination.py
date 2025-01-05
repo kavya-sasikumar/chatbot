@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 
 DEFAULT_PAGE = 1
-DEFAULT_PAGE_SIZE = 6
+DEFAULT_PAGE_SIZE = 15
 
 class CustomPagination(PageNumberPagination):
     """Custom Pagination class to reduce the number of items gotten based on requests."""
