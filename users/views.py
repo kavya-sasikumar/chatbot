@@ -84,6 +84,8 @@ class ProductCreateView(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser, )
 
 class ProductListView(generics.ListAPIView):
+    search_fields = ['title', 'description', 'price']
+    filter_backends = (filters.SearchFilter,)
     queryset = Product.objects.all().order_by('-id')
     serializer_class = ProductSerializer
     permission_classes = (permissions.AllowAny, )
