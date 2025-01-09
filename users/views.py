@@ -10,6 +10,7 @@ import requests
 import random
 # from transformers import pipeline
 import openai 
+import stripe
 
 # from chatbot.pagination import CustomPagination
 from django.contrib.auth.models import User
@@ -17,6 +18,7 @@ from .models import *
 from .serializers import *
 
 openai.api_key="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"
+stripe.api_key = "sk_test_51QdjuzL4eRbVW5gMN35JdsaVcAGKnGWNdZ8iDTzgw2wCz2NbkHZyZUWaAfjo9Zox4h5Us0Vh0jWQ27zoHEIeN4u9009XfhHjjS"
 # fashion_advisor=pipeline("text-generation", model="gpt2-large")
 """View to create a user"""
 @api_view(['POST',])
@@ -442,4 +444,30 @@ class DeactivateAccountAPIView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+class CreatePaymentIntentView(APIView):
+    def post(self, request):
+        try:
+            data = request.data
+            amount = int(float(data['amount']) * 100)  # Convert to cents
+            
+            intent = stripe.PaymentIntent.create(
+                amount=amount,
+                currency='usd',
+                payment_method_types=['card'],
+                metadata={'integration_check': 'accept_a_payment'}
+            )
+            
+            return Response(
+            {
+                'clientSecret': intent.client_secret,
+                'publicKey': 'pk_test_51QdjuzL4eRbVW5gMtw0bHPiH5WnnsYa0djB3dX3ulwqHWiJae4mN2NAhwkYpnUZNOG96boegByytA41IAQuZHZ5r00qCI3q7Dx'
+            }, 
+            status=status.HTTP_200_OK
+            )
+            
+        except Exception as e:
+            return Response(
+                {'error': str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 

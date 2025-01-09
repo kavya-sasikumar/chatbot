@@ -64,6 +64,9 @@ urlpatterns = [
 
     # On-boarding
     path('random-event-images/', RandomEventImagesAPIView.as_view()),
+
+    # Stripe
+    path('create-payment-intent/', CreatePaymentIntentView.as_view()),
  ]
 
 
