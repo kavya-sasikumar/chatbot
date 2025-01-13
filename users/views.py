@@ -83,7 +83,7 @@ class VendorRetrieveUpdateView(generics.RetrieveUpdateAPIView):
 class ProductCreateView(generics.CreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser, )
+    permission_classes = (permissions.IsAuthenticated, )
 
 class ProductListView(generics.ListAPIView):
     search_fields = ['title', 'description', 'price']
@@ -96,7 +96,7 @@ class ProductListView(generics.ListAPIView):
 class ProductRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser, )
+    permission_classes = (permissions.IsAuthenticated, )
 
 class ProductListVendor(generics.ListAPIView):
     serializer_class = ProductSerializer
