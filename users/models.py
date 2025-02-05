@@ -56,7 +56,7 @@ class Product(models.Model):
 class Order(models.Model):
     """ Order Class to keep details of a Product Order """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    address = models.TextField()
+    address = models.JSONField()
     total_amount = models.DecimalField(decimal_places=2, max_digits=20)
     StatusType = models.TextChoices('StatusType', 'PENDING SHIPPED DELIVERED CANCELLED')
     status_type = models.CharField(choices=StatusType.choices, max_length=9, default='PENDING')
@@ -70,7 +70,7 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
+    quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=20, decimal_places=2)
     StatusType = models.TextChoices('StatusType', 'PENDING SHIPPED DELIVERED CANCELLED')
     status_type = models.CharField(choices=StatusType.choices, max_length=9, default='PENDING')
